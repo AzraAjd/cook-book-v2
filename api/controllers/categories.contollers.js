@@ -1,5 +1,5 @@
 const mongojs = require('mongojs')
-const db = mongojs('localhost:27017/CookBook', ['recipes', 'special-categories'])
+const db = mongojs('localhost:27017/CookBook', ['recipes', 'categories'])
 
 module.exports.categoriesGetList = function(req, res) {
     console.log("GET categories list")
