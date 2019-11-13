@@ -1,0 +1,32 @@
+.navigation-bar {
+    background-color: #77C2AD;
+    height: 70px;
+    margin-left: 2px;
+    margin-right: 2px;
+    border-radius: 0.1cm;
+    padding-left: 3%;
+    width: 100%;
+}
+
+
+.logo-img{
+    position: absolute;
+    overflow: visible;
+}
+
+.body-background {
+    
+    background-color: #c2ffe9;
+    margin-top: 10px;
+    width: 86%;
+    height: 100%;
+    margin-right: 7%;
+    margin-left: 7%;
+    border-radius: 10px;
+    padding-top: 50px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+
+}
+
