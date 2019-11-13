@@ -15,4 +15,8 @@ router
   .route('/categories')
   .get(ctrlCategories.categoriesGetList);
 
+router
+  .route('/categories/:categoryId')
+  .get(ctrlCategories.singleCategory);
+
 module.exports = router;

@@ -3,7 +3,6 @@ var app = express();
 var path = require('path');
 var routes = require('./api/routes');
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
