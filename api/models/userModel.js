@@ -1,6 +1,7 @@
 'use strict'
 var mongoose = require ('mongoose');
 var Schema = mongoose.Schema;
+require ('mongoose-type-email');
 
 
 var UserSchema = new Schema({
@@ -11,7 +12,7 @@ var UserSchema = new Schema({
         //required: 'A username is required'
     },
     email: {
-        type: mongoose.SchemaTypes.Email,
+        type: String, //mongoose.SchemaTypes.Email
         required: 'Enter your email address',
         unique: true,
         //required: 'An email is required'
