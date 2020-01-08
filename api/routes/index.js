@@ -3,7 +3,8 @@ var router = express.Router();
 require('../models/recipeModel');
 var ctrlRecipes = require('../controllers/recipe.controllers');
 var ctrlCategories = require('../controllers/categories.contollers');
-var ctrlUsers = require('../controllers/user.controllers')
+var ctrlUsers = require('../controllers/user.controllers');
+var ctrlAuthentication = require('../controllers/authentication.controllers');
 
 //recipes routes
 router
@@ -31,11 +32,11 @@ router
 //authentication
 router
   .route('/register')
-  .post(ctrlUsers.register);
+  .post(ctrlAuthentication.register);
 
 router
   .route('/login')
-  .post(ctrlUsers.login);
+  .post(ctrlAuthentication.login);
 
 
 module.exports = router;

@@ -2,7 +2,9 @@
 
 var mongoose = require ('mongoose');
 var Recipe = require('../models/recipeModel');
-var mongoDB = 'mongodb://localhost:27017/CookBook';
+var config = require('config');
+var mongoDB = config.get('mongoURI');
+const auth = require('../../middleware/auth');
 
 var db = mongoose.connection;
 
@@ -33,7 +35,7 @@ module.exports.recipesCreate = function (req, res) {
 
     var new_recipe = new Recipe(req.body);
     console.log(req.body);
-    new_recipe.save(function (err, recipe) {
+    new_recipe.save( function (err, recipe) {
         if (err)
             res.send(err);
         res.json(recipe);

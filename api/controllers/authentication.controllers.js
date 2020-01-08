@@ -37,6 +37,7 @@ module.exports.register = function(req, res) {
           }
       })*/
     ];
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         console.log(errors);
@@ -51,7 +52,7 @@ module.exports.register = function(req, res) {
                     }
                     newUser.password = hash;
                     newUser.save()
-                        .then( User => {
+                        .then( user => {
 
                         jwt.sign(
                             { id: User._id },
@@ -61,7 +62,7 @@ module.exports.register = function(req, res) {
                                 if (err) throw err;
                                 res.json({
                                     token,
-                                    User
+                                    user
                                 });
                             }    
                         )                    
@@ -75,11 +76,39 @@ module.exports.register = function(req, res) {
 
 //User login
 module.exports.login = function(req, res) {
-    const { name, email, password} = req.body;
-    if (!name || !email || !password) {
+    const { email, password} = req.body;
+    if (!email || !password) {
         return res.status(400).json({ msg: 'Please enter all the fields' });
     }
 
+    //check if the email exists
+    User.findOne({ email })
+        .then(user => {
+            if (!user) return res.status(400).json({ msg: 'User does not exist'});
+
+            //validate password
+            bcrypt.compare(password, user.password)
+                .then(isMatch => {
+                    if (!isMatch) return res.status(400).json({ msg: 'Invalid credidentials' });
+
+                    jwt.sign(
+                        { id: User._id },
+                        config.get('jwtSecret'),
+                        { expiresIn : 3600},
+                        (err, token) => {
+                            if (err) throw err;
+                            res.json({
+                                token,
+                                user
+                            });
+                        }    
+                    )
+
+                })
+
+        })
+
+    
+
     
 };
-
