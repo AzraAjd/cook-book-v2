@@ -10,7 +10,7 @@ function auth(req, res, next) {
     }
 
     try {
-        //verify token
+    //verify token
     const decoded = jwt.verify(token, config.get('jwtSecret'));
     //Add user from payload
     req.user = decoded;
@@ -18,6 +18,7 @@ function auth(req, res, next) {
     } catch (e) {
         res.status(400).json({ msg: 'token is not valid' });
     }
+
 }
 
 module.exports = auth;

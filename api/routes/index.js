@@ -5,6 +5,7 @@ var ctrlRecipes = require('../controllers/recipe.controllers');
 var ctrlCategories = require('../controllers/categories.contollers');
 var ctrlUsers = require('../controllers/user.controllers');
 var ctrlAuthentication = require('../controllers/authentication.controllers');
+const auth = require('../../middleware/auth');
 
 //recipes routes
 router
@@ -17,7 +18,7 @@ router
 
 router 
   .route('/recipes')
-  .post(ctrlRecipes.recipesCreate);
+  .post(auth, ctrlRecipes.recipesCreate);
 
 //categories routes
 router
@@ -38,5 +39,8 @@ router
   .route('/login')
   .post(ctrlAuthentication.login);
 
+router
+  .route('/user')
+  .get(auth, ctrlAuthentication.userAuth)
 
 module.exports = router;

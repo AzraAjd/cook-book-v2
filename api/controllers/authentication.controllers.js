@@ -8,11 +8,15 @@ var mongoDB = config.get('mongoURI');
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../../middleware/auth')
 
 mongoose.connect(mongoDB, {useNewUrlParser: true});
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
-//User registera
+/*  @route POST /register
+    @desc Register user
+    @access Public
+*/
 module.exports.register = function(req, res) {
     console.log('registering user');
 
@@ -45,36 +49,36 @@ module.exports.register = function(req, res) {
         var newUser = new User(req.body);
         console.log(req.body);
         
-            bcrypt.genSalt(10, function(err, salt) {
-                bcrypt.hash(newUser.password, salt, function(err, hash) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    newUser.password = hash;
-                    newUser.save()
-                        .then( user => {
+        bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(newUser.password, salt, function(err, hash) {
+                if (err) {
+                    console.log(err);
+                }
+                newUser.password = hash;
+                newUser.save()
+                    .then( user => {
 
-                        jwt.sign(
-                            { id: User._id },
-                            config.get('jwtSecret'),
-                            { expiresIn : 3600},
-                            (err, token) => {
-                                if (err) throw err;
-                                res.json({
-                                    token,
-                                    user
-                                });
-                            }    
-                        )                    
-                })
+                    jwt.sign(
+                        { id: user._id },
+                        config.get('jwtSecret'),
+                        { expiresIn : 3600},
+                        (err, token) => {
+                            if (err) throw err;
+                            res.json({ token, user });
+                        }    
+                    )                    
+                    })
             })
-    });
+        });
     }
     
 };
 
 
-//User login
+/*  @route POST /login
+    @desc Authenticate user
+    @access Public
+*/
 module.exports.login = function(req, res) {
     const { email, password} = req.body;
     if (!email || !password) {
@@ -103,12 +107,18 @@ module.exports.login = function(req, res) {
                             });
                         }    
                     )
-
                 })
-
         })
-
-    
-
-    
 };
+
+/*  @route GET /user
+    @desc Auth user
+    @access Public
+*/
+module.exports.userAuth = function(req, res) {
+    User.findById(req.user.id)
+    .select('-password')
+    .then( user => res.json(user));
+    
+}
+
