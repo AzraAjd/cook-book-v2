@@ -17,9 +17,9 @@ import Reloader from './App';
 //ReactDOM.render(<Reloader />, document.getElementById('root'));
 
 ReactDOM.render(<EventCounter onEvenClick={(data)=>
-    {console.log(`even $(data)`);}} />,
-    document.getElementById("root")
-  );
-  
+  {console.log(`even ${data}`);}} />,
+  document.getElementById("root")
+);
+
 
 serviceWorker.unregister();

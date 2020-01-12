@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 
+
 /*EXAMPLE #1 
 ========================================================================*/
 
@@ -79,6 +80,8 @@ class EventCounter extends React.Component {
     </div>
   }
 }
+
+
 
 
 

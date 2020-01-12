@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "react-practice",
   "version": "0.1.0",
   "private": true,
@@ -27,5 +28,41 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+=======
+  "name": "cook-book",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AzraAjd/cook-book-v2.git"
+  },
+  "keywords": [
+    "cookbook",
+    "recipes"
+  ],
+  "author": "Azra Ajdinovic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AzraAjd/cook-book-v2/issues"
+  },
+  "homepage": "https://github.com/AzraAjd/cook-book-v2#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "config": "^3.2.4",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.1",
+    "googleapis": "^46.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongod": "^2.0.0",
+    "mongojs": "^3.1.0",
+    "mongoose": "^5.8.0",
+    "mongoose-type-email": "^1.0.11"
+>>>>>>> d766b3f155b6563d3c8c1a66fc2db5a9e01d1812
   }
 }
