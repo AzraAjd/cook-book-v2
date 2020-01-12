@@ -74,7 +74,6 @@ module.exports.register = function(req, res) {
     
 };
 
-
 /*  @route POST /login
     @desc Authenticate user
     @access Public
