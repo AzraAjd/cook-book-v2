@@ -7,6 +7,12 @@ var mongoose = require('mongoose');
 var db = mongoose.connection;
 
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
 /*const { google } = require('googleapis');
 const oauth2Client = new google.auth.Oauth2(
     process.env.CLIENT_ID || webkitConvertPointFromPageToNode.CLIENT_ID,
@@ -26,6 +32,7 @@ app.use(bodyParser.json());
 app.use('/', routes); 
 
 app.set('views', __dirname + '/views');
+
 
 app.listen(8080, function() {
     console.log('listening on port 8080');

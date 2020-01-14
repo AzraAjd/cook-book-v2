@@ -4,9 +4,9 @@ var Schema = mongoose.Schema;
 
 
 var RecipeSchema = new Schema({
-    title: {
+    name: {
         type: String,
-        //required: 'Enter the title of your recipe'
+        //required: 'Enter the name of your recipe'
     },
     img_url: {
         type: String

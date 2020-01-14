@@ -16,9 +16,14 @@ router
   .route('/recipes/:recipeId')
   .get(ctrlRecipes.recipesGetOne);
 
+  //add auth,
 router 
   .route('/recipes')
-  .post(auth, ctrlRecipes.recipesCreate);
+  .post(ctrlRecipes.recipesCreate);
+
+router
+  .route('/recipes/:recipeId')
+  .delete(ctrlRecipes.recipesDeleteOne)
 
 //categories routes
 router
