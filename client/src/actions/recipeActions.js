@@ -29,11 +29,13 @@ export const addRecipe = recipe => dispatch => {
 };
 
 export const deleteRecipe = id => dispatch => {
-    axios.delete(`http://localhost:8080/recipes/${id}`).then(res =>
-    dispatch({
-        type: DELETE_RECIPE,
-        payload: id
-    })
+    axios
+        .delete(`http://localhost:8080/recipes/${id}`)
+        .then( res =>
+            dispatch({
+                type: DELETE_RECIPE,
+                payload: id
+            })
     )
 };
 

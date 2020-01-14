@@ -56,18 +56,19 @@ class RecipeModal extends Component {
                     isOpen={this.state.modal}
                     toggle={this.toggle}
                 >
-                    <ModalHeader toggle={this.toggle} > Add to Recipes List</ModalHeader>
+                    <ModalHeader toggle={this.toggle} > Add a new recipe</ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup>
-                                <Label for="recipe">Recipe</Label>
+                                Recipe name
                                 <Input
                                     type="text"
                                     name="name"
                                     id="recipe"
-                                    placeholder="Add a new recipe"
+                                    placeholder="Add the recipe title"
                                     onChange={this.onChange}
                                 />
+
                                 <Button
                                     color="success"
                                     style={{marginTop: '2rem'}}
