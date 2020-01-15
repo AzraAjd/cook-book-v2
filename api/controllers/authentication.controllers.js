@@ -18,61 +18,53 @@ db.on('error', console.error.bind(console, 'MongoDB connection error'));
     @access Public
 */
 module.exports.register = function(req, res) {
-    console.log('registering user');
+    const { name, email, password } = req.body;
 
-    var email = req.body.email;
-    var username = req.body.username;
-    var password = req.body.password;
-    var birthDate = req.body.birthDate;
-    var bio = req.body.bio;
-    /*var password2 = req.body.password2;*/
+  // Simple validation
+  if(!name || !email || !password) {
+    return res.status(400).json({ msg: 'Please enter all fields' });
+  }
 
-    [
-        check('name').isLength({min:1}).trim().withMessage('Name required'),
-        check('email').isLength({min:1}).trim().withMessage('Email required'),
-        check('email').isEmail().trim().withMessage('Email is not valid'),
-        check('password').isLength({min:1}).withMessage('Password required'),
-        /*check('password').custom((value,{req, loc, path}) => {
-          if (value !== req.body.password2) {
-              // throw error if passwords do not match
-              throw new Error("Passwords do not match");
-          } else {
-              return value;
-          }
-      })*/
-    ];
-    
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        console.log(errors);
-    } else {
-        var newUser = new User(req.body);
-        console.log(req.body);
-        
-        bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(newUser.password, salt, function(err, hash) {
-                if (err) {
-                    console.log(err);
+  // Check for existing user
+  User.findOne({ email })
+    .then(user => {
+      if(user) return res.status(400).json({ msg: 'User already exists' });
+
+      const newUser = new User({
+        name,
+        email,
+        password
+      });
+
+      // Create salt & hash
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if(err) throw err;
+          newUser.password = hash;
+          newUser.save()
+            .then(user => {
+              jwt.sign(
+                { id: user.id },
+                config.get('jwtSecret'),
+                { expiresIn: 3600 },
+                (err, token) => {
+                  if(err) throw err;
+                  res.json({
+                    token,
+                    user: {
+                      id: user.id,
+                      name: user.name,
+                      email: user.email
+                    }
+                  });
                 }
-                newUser.password = hash;
-                newUser.save()
-                    .then( user => {
-
-                    jwt.sign(
-                        { id: user._id },
-                        config.get('jwtSecret'),
-                        { expiresIn : 3600},
-                        (err, token) => {
-                            if (err) throw err;
-                            res.json({ token, user });
-                        }    
-                    )                    
-                    })
-            })
-        });
-    }
+              )
+            });
+        })
+      })
+    })
+}
     
-};
 
 /*  @route POST /login
     @desc Authenticate user
@@ -107,8 +99,8 @@ module.exports.login = function(req, res) {
                         }    
                     )
                 })
-        })
-};
+    });
+}
 
 /*  @route GET /user
     @desc Auth user
@@ -118,6 +110,6 @@ module.exports.userAuth = function(req, res) {
     User.findById(req.user.id)
     .select('-password')
     .then( user => res.json(user));
-    
-}
+} 
+
 

@@ -1,4 +1,4 @@
-import { GET_RECIPES, ADD_RECIPE, DELETE_RECIPE, RECIPES_LOADING, SEARCH_RECIPES} from '../actions/types';
+import { GET_RECIPES, ADD_RECIPE, DELETE_RECIPE, RECIPES_LOADING, SEARCH_RECIPES, GET_ONE_RECIPE} from '../actions/types';
 
 const initialState = {
     recipes: [],
@@ -17,13 +17,19 @@ export default function(state = initialState, action) {
         case SEARCH_RECIPES:
             return {
                 ...state,
-                recipes: state.recipes.filter(recipe => recipe.name == action.payload)
+                recipes: state.recipes.filter(recipe => recipe.name === action.payload)
             }
 
         case DELETE_RECIPE:
             return {
                 ...state,
                 recipes: state.recipes.filter(recipe => recipe._id !== action.payload)
+            }
+
+        case GET_ONE_RECIPE:
+            return {
+                ...state,
+                recipes: state.recipes.filter(recipe => recipe._id === action.payload)
             }
         case ADD_RECIPE:
             return {

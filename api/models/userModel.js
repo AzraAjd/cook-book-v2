@@ -5,7 +5,7 @@ require ('mongoose-type-email');
 
 
 var UserSchema = new Schema({
-    username: {
+    name: {
         type: String,
         required: 'Enter a username',
         unique: true,
@@ -21,12 +21,6 @@ var UserSchema = new Schema({
         type: String,
         required: 'Enter password'
         //required: 'Enter a new password'
-    },
-    bio: {
-        type: String,
-    },
-    birthDate: {
-        type: String
     }
 },
 {collection : 'users'} 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { connect } from 'react-redux';
-import { getRecipes, deleteRecipe } from '../actions/recipeActions';
+import { getRecipes, deleteRecipe, getRecipeById } from '../actions/recipeActions';
+import { getTheRecipe } from './Recipe';
 import  PropTypes  from 'prop-types';
+import Recipe from './Recipe';
 import {
     Card,
     CardDeck,
@@ -11,19 +12,43 @@ import {
     CardText,
     CardBody,
     CardTitle,
-    Row,
-     Col
+    CardColumns,
 } from 'reactstrap';
 import '../css/custom.css'
+import { connect } from 'react-redux';
 
 class RecipesList extends Component {
     componentDidMount() {
         this.props.getRecipes();
     }
 
-    onDeleteClick = id => {
+    state = {
+        showModal: false
+    };
+             
+    /*onDeleteClick = id => {
         this.props.deleteRecipe(id);
     }
+    */
+    onClick = id => {
+        this.props.getRecipeById(id);
+    }
+
+    getComponent() {
+        console.log('here')
+        if (this.state.showModal) {  // show the modal if state showModal is true
+          return Recipe;
+        } else {
+          return null;
+        }
+      }
+    //onClick={this.onClick.bind(this, _id)}
+
+    /*sendThisRecipe = (_id, name, img_url, description, directions) => {
+        console.log('you got here')
+        this.props.getTheRecipe(_id, name, img_url, description, directions)
+    }*/
+    
 
     render() {
         const { recipes } = this.props.recipe;
@@ -33,23 +58,26 @@ class RecipesList extends Component {
             <Container>
                 <ListGroup>
                     <TransitionGroup className="recipe-list">
-                    <CardDeck>
-                    {recipes.map(({ _id, name, img_url, description }) => (
-                            <CSSTransition key={_id} timeout={500} classNames="fade">
-                            
-                                <Card className="card" style={{ width: '18rem'}}>
-                                    <CardImg className="recipe-img" variant="top" src={img_url} />
-                                    <CardBody>
-                                        <CardTitle style={{color: "#f77f21"}}>{name}</CardTitle>
-                                        <hr/>
-                                        <CardText style={{fontSize: "12px"}}>{description}</CardText>
-                                        <Button variant="primary">See recipe</Button>
-                                    </CardBody>
-                                </Card>
-                            
-                            </CSSTransition>
-                        ))}
-                    </CardDeck> 
+                    <CardColumns>
+                    {recipes.map(({ _id, name, img_url, description, directions }) => (
+                        <CSSTransition key={_id} timeout={500} classNames="fade">
+                        
+                            <Card className="card" style={{ width: '18rem'}}>
+                                <CardImg className="recipe-img" variant="top" src={img_url} />
+                                <CardBody>
+                                    <CardTitle style={{color: "#f77f21"}}>{name}</CardTitle>
+                                    <hr/>
+                                    <CardText style={{fontSize: "12px"}}>{description}</CardText>
+                                    <Button onClick={() => {this.getComponent(); this.onClick.bind(this, _id)}} variant="primary">
+                                    See recipe
+                                    </Button>
+                                    
+                                </CardBody>
+                            </Card>
+                        
+                        </CSSTransition>
+                    ))}
+                    </CardColumns> 
                     </TransitionGroup>
                 </ListGroup>
             </Container>
@@ -58,6 +86,7 @@ class RecipesList extends Component {
 }
 
 RecipesList.propTypes = {
+    getRecipeById: PropTypes.func.isRequired,
     getRecipes: PropTypes.func.isRequired,
     recipe: PropTypes.object.isRequired
 }
@@ -68,6 +97,6 @@ const mapStateToProps = (state) => ({
 
 export default connect (
     mapStateToProps, 
-    { getRecipes, deleteRecipe }
+    { getRecipes, deleteRecipe, getRecipeById}
     )
     (RecipesList);

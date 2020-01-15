@@ -6,13 +6,13 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
 
-
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
     next();
   });
+
 
 /*const { google } = require('googleapis');
 const oauth2Client = new google.auth.Oauth2(
