@@ -1,7 +1,18 @@
 import axios from 'axios';
-import { GET_RECIPES, ADD_RECIPE, DELETE_RECIPE, RECIPES_LOADING} from './types';
+import { GET_RECIPES, ADD_RECIPE, DELETE_RECIPE, RECIPES_LOADING, SEARCH_RECIPES} from './types';
 import { Types } from 'mongoose';
 
+export const searchRecipes = name => dispatch => {
+    axios
+        .get(`http://localhost:8080/recipes/${name}`)
+        .then(res => {
+            console.log(res);
+            dispatch({
+                type: SEARCH_RECIPES,
+                payload: name
+            })
+        })
+}
 
 export const getRecipes = () => dispatch => {
     dispatch(setRecipesLoading());
@@ -11,7 +22,7 @@ export const getRecipes = () => dispatch => {
             console.log(res); 
             dispatch({
                 type: GET_RECIPES,
-                payload: res.data,
+                payload: res.data
             });
         }, 
         err => console.log(err))

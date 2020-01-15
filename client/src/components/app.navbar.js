@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import  PropTypes  from 'prop-types';
+import { searchRecipes } from '../actions/recipeActions';
 import {
     Collapse,
     Navbar,
@@ -9,16 +12,30 @@ import {
     NavLink,
     Container
 } from 'reactstrap';
+import { Form, FormControl, Button } from 'react-bootstrap'
 
 class AppNavbar extends Component {
     state = {
-        isOpen: false
+        isOpen: false,
+        name: ''
     }
 
     toggle =() => {
         this.setState({
             isOpen: !this.state.isOpen
         });
+    }
+
+    onChange = e => {
+        this.setState({
+            name: e.target.value
+        });
+    }
+
+    onSubmit = e => {
+        e.preventDefault();
+        
+        this.props.searchRecipes(this.state.name);
     }
 
     render() {
@@ -30,10 +47,18 @@ class AppNavbar extends Component {
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                           <NavItem>
-                               <NavLink href="https://github.com/AzraAjd/cook-book-v2.git">
-                                   Github
-                               </NavLink>
+                            <Form onSubmit={this.onSubmit} inline>
+                                <FormControl 
+                                    type="text" 
+                                    name="search" 
+                                    placeholder="Search" 
+                                    className="mr-sm-2"
+                                    onChange={this.onChange}
+                                />
+                                <Button>Search</Button>
+                            </Form>
+                            <NavItem className='ml-5'>
+                               <Button>Login</Button>
                             </NavItem>
                         </Nav>
                     </Collapse>
@@ -44,6 +69,8 @@ class AppNavbar extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    recipe: state.recipe
+});
 
-
-export default AppNavbar;
+export default connect (mapStateToProps,{ searchRecipes })(AppNavbar);

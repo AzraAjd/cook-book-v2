@@ -11,6 +11,20 @@ var db = mongoose.connection;
 mongoose.connect(mongoDB, {useNewUrlParser: true});
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
+/*  @route GET /recipes/:name
+    @desc list all recipes
+    @access Public
+*/
+module.exports.recipesSearch = function (req, res) {
+    console.log("GET recipes searched by name")
+
+    Recipe.find({ name: req.params.name }, function (err, recipe) {
+        if (err)
+            res.send(err);
+        res.json(recipe);
+    });
+};
+
 /*  @route GET /recipes
     @desc list all recipes
     @access Public

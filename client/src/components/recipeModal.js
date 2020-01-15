@@ -16,7 +16,12 @@ import { addRecipe } from '../actions/recipeActions'
 class RecipeModal extends Component {
     state = {
         modal: false,
-        name: ''
+        name: '',
+        description: '',
+        img_url: '',
+        directions: '',
+        prepTime: '',
+        category:''
     }
 
     toggle = () => {
@@ -26,14 +31,22 @@ class RecipeModal extends Component {
     }
 
     onChange = e => { 
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ 
+            [e.target.name]: e.target.value,
+        });
+
     }
 
     onSubmit = e => {
         e.preventDefault();
 
         const newRecipe = {
-            name: this.state.name
+            name: this.state.name,
+            description: this.state.description,
+            img_url: this.state.img_url,
+            directions: this.state.directions,
+            prepTime: this.state.prepTime,
+            category: this.state.category
         }
 
         // Add recipe via AddRecipe action 
@@ -48,11 +61,10 @@ class RecipeModal extends Component {
             <div>
                 <Button
                     color = "success"
-                    style = {{marginBottom: '2rem'}}
                     onClick = {this.toggle}
                 >Add Recipe</Button>
-
-                <Modal
+                <hr/>
+                <Modal 
                     isOpen={this.state.modal}
                     toggle={this.toggle}
                 >
@@ -65,10 +77,54 @@ class RecipeModal extends Component {
                                     type="text"
                                     name="name"
                                     id="recipe"
-                                    placeholder="Add the recipe title"
+                                    placeholder=""
                                     onChange={this.onChange}
                                 />
-
+                                <br/>
+                                Dish description
+                                <Input
+                                    type="text"
+                                    name="description"
+                                    id="description"
+                                    placeholder=""
+                                    onChange={this.onChange}
+                                />
+                                <br/>
+                                Recipe image URL
+                                <Input
+                                    type="text"
+                                    name="img_url"
+                                    id="imageURL"
+                                    placeholder=""
+                                    onChange={this.onChange}
+                                />
+                                <br/>
+                                Directions for cooking the dish
+                                <Input
+                                    type="text"
+                                    name="directions"
+                                    id="directions"
+                                    placeholder=""
+                                    onChange={this.onChange}
+                                />
+                                <br/>
+                                Time required to prepare the dish (in minutes)
+                                <Input
+                                    type="number"
+                                    name="prepTime"
+                                    id="prepTime"
+                                    placeholder=""
+                                    onChange={this.onChange}
+                                />
+                                <br/>
+                                Categories
+                                <select>
+                                    <option name="breakfast">Breakfast</option>
+                                    <option name="lunch">Lunch</option>
+                                    <option name="dinner">Dinner</option>
+                                    <option name="dessert">Dessert</option>
+                                </select>
+                                <br/>
                                 <Button
                                     color="success"
                                     style={{marginTop: '2rem'}}

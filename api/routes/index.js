@@ -13,6 +13,10 @@ router
   .get(ctrlRecipes.recipesGetAll);  
 
 router
+  .route('/recipes/:name')
+  .get(ctrlRecipes.recipesSearch)
+
+router
   .route('/recipes/:recipeId')
   .get(ctrlRecipes.recipesGetOne);
 
