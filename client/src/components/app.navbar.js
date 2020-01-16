@@ -6,7 +6,6 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
     Container
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -15,6 +14,7 @@ import { searchRecipes } from '../actions/recipeActions';
 import RegisterModal from './auth/RegisterModal';
 import LoginModal from './auth/LoginModal';
 import Logout from './auth/Logout'
+import '../css/custom.css';
 
 import { Form, FormControl, Button } from 'react-bootstrap';
 
@@ -90,7 +90,7 @@ class AppNavbar extends Component {
                                     className="mr-sm-2"
                                     onChange={this.onChange}
                                 />
-                                <Button className="mr-3">Search</Button>
+                                <Button className="mr-5">Search</Button>
                             </Form>
                             { isAuthenticated ? authLinks : guestLinks}
                         </Nav>

@@ -6,12 +6,11 @@ import {
     ModalBody,
     Form,
     FormGroup,
-    Label,
     Input
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { addRecipe } from '../actions/recipeActions'
-
+import { addRecipe } from '../actions/recipeActions';
+import PropTypes from 'prop-types';
 
 class RecipeModal extends Component {
     state = {
@@ -23,6 +22,10 @@ class RecipeModal extends Component {
         prepTime: '',
         category:''
     }
+
+    static propTypes = {
+        isAuthenticated: PropTypes.bool
+    };
 
     toggle = () => {
         this.setState({ 
@@ -59,10 +62,14 @@ class RecipeModal extends Component {
     render() {
         return(
             <div>
+                {this.props.isAuthenticated ? (
                 <Button
                     color = "success"
                     onClick = {this.toggle}
-                >Add Recipe</Button>
+                >Add Recipe
+                </Button>) : (
+                 <h5 style={{color: "#f77f21"}} className='mb-3 ml-4'>Please log in to add new recipes</h5>
+                )}
                 <hr/>
                 <Modal 
                     isOpen={this.state.modal}
@@ -141,7 +148,8 @@ class RecipeModal extends Component {
 
 
 const mapStateToProps = state => ({
-    recipe: state.recipe
+    recipe: state.recipe,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, { addRecipe } )(RecipeModal);

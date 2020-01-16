@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Container, ListGroup} from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { getRecipes, deleteRecipe, getRecipeById } from '../actions/recipeActions';
-import { getTheRecipe } from './Recipe';
 import  PropTypes  from 'prop-types';
 import Recipe from './Recipe';
 import {
+    Button,
     Card,
-    CardDeck,
     CardImg,
     CardText,
     CardBody,
     CardTitle,
     CardColumns,
 } from 'reactstrap';
-import '../css/custom.css'
+import '../css/custom.css';
 import { connect } from 'react-redux';
 
 class RecipesList extends Component {
@@ -59,19 +58,19 @@ class RecipesList extends Component {
                 <ListGroup>
                     <TransitionGroup className="recipe-list">
                     <CardColumns>
-                    {recipes.map(({ _id, name, img_url, description, directions }) => (
+                    {recipes.map(({ _id, name, img_url, description, directions, prepTime }) => (
                         <CSSTransition key={_id} timeout={500} classNames="fade">
                         
                             <Card className="card" style={{ width: '18rem'}}>
                                 <CardImg className="recipe-img" variant="top" src={img_url} />
                                 <CardBody>
-                                    <CardTitle style={{color: "#f77f21"}}>{name}</CardTitle>
+                                    <CardTitle style={{color: "#f77f21"}}>{name}                           
+                                        <p style={{marginLeft: "80px"},{fontSize: "12px"}}>time: {prepTime}min</p>  </CardTitle>
                                     <hr/>
                                     <CardText style={{fontSize: "12px"}}>{description}</CardText>
-                                    <Button onClick={() => {this.getComponent(); this.onClick.bind(this, _id)}} variant="primary">
-                                    See recipe
-                                    </Button>
-                                    
+                                    <hr/>
+                                    <CardText style={{fontSize: "12px"}, {color: "#f77f21"}}>Preparation instructions:</CardText>
+                                    <CardText style={{fontSize: "12px"}}>{directions}</CardText>
                                 </CardBody>
                             </Card>
                         

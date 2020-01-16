@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import {
-    Button,
     Modal,
     ModalHeader,
     ModalBody,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    NavLink,
-    Alert
   } from 'reactstrap';
-import { Image } from 'react-bootstrap';
-import { getRecipeById, deleteRecipe } from '../actions/recipeActions';
 import  PropTypes  from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -37,7 +28,7 @@ class Recipe extends Component {
 
     render () {
 
-        const { recipes } = this.props.recipe;
+        //const { recipes } = this.props.recipe;
         console.log('didid');
 
         return(
