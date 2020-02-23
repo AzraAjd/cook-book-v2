@@ -12,7 +12,7 @@ router
   .get(ctrlRecipes.recipesGetAll);  
 
 router
-  .route('/recipes/:name')
+  .route('/recipes/search/:name')
   .get(ctrlRecipes.recipesSearch)
 
 router

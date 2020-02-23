@@ -11,3 +11,19 @@
 .nav-color {
     background-color: #f77f21;
 }
+
+#modal-body {
+    overflow: auto;
+}
+
+.modal-recipe-img {
+    max-width: 550px;
+    max-height: 270px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+.modal-recipe-txt {
+    max-height: 100px;
+    overflow: auto;
+}

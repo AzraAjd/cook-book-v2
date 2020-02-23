@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, ListGroup} from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { getRecipes, deleteRecipe, getRecipeById } from '../actions/recipeActions';
@@ -11,8 +11,9 @@ import {
     CardText,
     CardBody,
     CardTitle,
-    CardColumns,
+    CardColumns
 } from 'reactstrap';
+import SeeRecipeModal from './SeeRecipeModal';
 import '../css/custom.css';
 import { connect } from 'react-redux';
 
@@ -29,7 +30,9 @@ class RecipesList extends Component {
         this.props.deleteRecipe(id);
     }
     */
+
     onClick = id => {
+        console.log(id)
         this.props.getRecipeById(id);
     }
 
@@ -58,7 +61,7 @@ class RecipesList extends Component {
                 <ListGroup>
                     <TransitionGroup className="recipe-list">
                     <CardColumns>
-                    {recipes.map(({ _id, name, img_url, description, directions, prepTime }) => (
+                    {recipes.map(({ _id, name, img_url, description, directions, prepTime, ingredients }) => (
                         <CSSTransition key={_id} timeout={500} classNames="fade">
                         
                             <Card className="card" style={{ width: '18rem'}}>
@@ -71,9 +74,23 @@ class RecipesList extends Component {
                                     <hr/>
                                     <CardText style={{fontSize: "12px"}, {color: "#f77f21"}}>Preparation instructions:</CardText>
                                     <CardText style={{fontSize: "12px"}}>{directions}</CardText>
+                                    <hr/>
+                                    <SeeRecipeModal id={_id}
+                                                    name={name}
+                                                    img_url={img_url}
+                                                    description={description}
+                                                    directions={directions}
+                                                    prepTime={prepTime}
+                                                    ingredients={ingredients}/>
+                                    <Button key={_id}
+                                            value={_id}
+                                            color="primary" style={{marginLeft: "3.5rem"}}
+                                            onClick={e => this.onClick(e.target.value)}>View Recipe
+                                    </Button>
                                 </CardBody>
+                                
+                              
                             </Card>
-                        
                         </CSSTransition>
                     ))}
                     </CardColumns> 

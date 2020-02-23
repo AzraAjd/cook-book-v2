@@ -10,9 +10,13 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+    res.header('Content-Security-Policy', 'default-src', 'none');
+    res.header('Content-Security-Policy', 'img-src', 'self');
+    res.header('Content-Security-Policy', 'script-src', 'self');
+    res.header('Content-Security-Policy', 'connect-src', 'self');
+    res.header('Content-Security-Policy', 'cstyle-src', 'self');
     next();
   });
-
 
 /*const { google } = require('googleapis');
 const oauth2Client = new google.auth.Oauth2(

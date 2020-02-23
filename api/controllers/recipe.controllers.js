@@ -48,6 +48,7 @@ module.exports.recipesGetOne = function (req, res) {
     Recipe.findById(req.params.recipeId, function (err, recipe) {
         if (err)
             res.send(err);
+        console.log(recipe)
         res.json(recipe);
     });
 };
