@@ -30,12 +30,18 @@ class SeeRecipeModal extends Component {
       console.log(this.props)
     }
 
+    getIngredients = ingredients => {
+      var jsonArray = JSON.parse(JSON.stringify(ingredients))
+      console.log(jsonArray)
+    }
+
     render() {
+      
 
         return (
           <div>
             <Button color="primary" style={{marginLeft: "3.5rem"}} onClick={this.onClick} href='#'>
-              Modal
+              View Recipe
             </Button>
             <Modal isOpen={this.state.modal} toggle={this.toggle}>
                 <ModalHeader toggle={this.toggle}>{this.props.name}</ModalHeader>
@@ -48,7 +54,9 @@ class SeeRecipeModal extends Component {
                     <p>{this.props.directions}</p>
                     <hr/>
                   <p className="modal-recipe-txt"> Ingredients: </p>
-                  <p> {JSON.stringify(this.props.ingredients)}</p>
+                  <ul> 
+                    {this.props.ingredients.map((ingredient) => <li>{ingredient.name}        {ingredient.amount}</li>)} 
+                  </ul>
                     
                 </ModalBody>
             </Modal>

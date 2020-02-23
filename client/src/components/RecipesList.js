@@ -29,12 +29,12 @@ class RecipesList extends Component {
     /*onDeleteClick = id => {
         this.props.deleteRecipe(id);
     }
-    */
+    
 
     onClick = id => {
         console.log(id)
         this.props.getRecipeById(id);
-    }
+    }*/
 
     getComponent() {
         console.log('here')
@@ -82,11 +82,6 @@ class RecipesList extends Component {
                                                     directions={directions}
                                                     prepTime={prepTime}
                                                     ingredients={ingredients}/>
-                                    <Button key={_id}
-                                            value={_id}
-                                            color="primary" style={{marginLeft: "3.5rem"}}
-                                            onClick={e => this.onClick(e.target.value)}>View Recipe
-                                    </Button>
                                 </CardBody>
                                 
                               
