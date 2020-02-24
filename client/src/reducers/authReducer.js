@@ -10,6 +10,7 @@ import {
   } from '../actions/types';
   
   const initialState = {
+    id: localStorage.getItem('id'),
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
@@ -33,6 +34,7 @@ import {
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
         localStorage.setItem('token', action.payload.token);
+        localStorage.setItem('id', action.payload.id);
             return {
                 ...state,
                 ...action.payload,

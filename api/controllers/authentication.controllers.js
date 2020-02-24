@@ -18,7 +18,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error'));
     @access Public
 */
 module.exports.register = function(req, res) {
-    const { name, email, password } = req.body;
+    const { name, email, password, isAdmin, about, userPhoto } = req.body;
 
   // Simple validation
   if(!name || !email || !password) {
@@ -33,7 +33,10 @@ module.exports.register = function(req, res) {
       const newUser = new User({
         name,
         email,
-        password
+        password,
+        isAdmin,
+        about,
+        userPhoto
       });
 
       // Create salt & hash
@@ -54,7 +57,10 @@ module.exports.register = function(req, res) {
                     user: {
                       id: user.id,
                       name: user.name,
-                      email: user.email
+                      email: user.email,
+                      isAdmin: user.isAdmin,
+                      about: user.about,
+                      userPhoto: user.userPhoto
                     }
                   });
                 }

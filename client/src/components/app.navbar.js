@@ -46,6 +46,7 @@ class AppNavbar extends Component {
         this.props.searchRecipes(this.state.name);
     }
 
+
     render() {
 
         const { isAuthenticated, user } = this.props.auth;

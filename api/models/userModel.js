@@ -3,25 +3,37 @@ var mongoose = require ('mongoose');
 var Schema = mongoose.Schema;
 require ('mongoose-type-email');
 
+/*need to add length limitations to all strings
+================================================*/
 
 var UserSchema = new Schema({
     name: {
-        type: String,
+        type: String, 
         required: 'Enter a username',
         unique: true,
         //required: 'A username is required'
     },
     email: {
-        type: String, //mongoose.SchemaTypes.Email
+        type: String, 
         required: 'Enter your email address',
         unique: true,
         //required: 'An email is required'
     },
     password: {
-        type: String,
+        type: String, 
         required: 'Enter password'
         //required: 'Enter a new password'
+    },
+    isAdmin: {
+        type: Boolean
+    },
+    about: {
+        type: String 
+    },
+    userPhoto: {
+        type: String 
     }
+
 },
 {collection : 'users'} 
 );

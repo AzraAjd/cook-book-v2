@@ -42,4 +42,16 @@ router
   .route('/user')
   .get(auth, ctrlAuthentication.userAuth)
 
+router
+  .route('/users')
+  .get(ctrlUsers.usersGetAll)
+
+router
+  .route('/users/:userId')
+  .get(ctrlUsers.usersGetOne)
+
+router
+  .route('/users/:userId')
+  .delete(ctrlUsers.usersDeleteOne)
+
 module.exports = router;

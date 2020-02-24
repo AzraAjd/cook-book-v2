@@ -28,29 +28,16 @@ class RecipesList extends Component {
              
     /*onDeleteClick = id => {
         this.props.deleteRecipe(id);
-    }
-    
-
-    onClick = id => {
-        console.log(id)
-        this.props.getRecipeById(id);
     }*/
 
     getComponent() {
-        console.log('here')
         if (this.state.showModal) {  // show the modal if state showModal is true
           return Recipe;
         } else {
           return null;
         }
       }
-    //onClick={this.onClick.bind(this, _id)}
 
-    /*sendThisRecipe = (_id, name, img_url, description, directions) => {
-        console.log('you got here')
-        this.props.getTheRecipe(_id, name, img_url, description, directions)
-    }*/
-    
 
     render() {
         const { recipes } = this.props.recipe;
@@ -106,8 +93,4 @@ const mapStateToProps = (state) => ({
     recipe: state.recipe
 });
 
-export default connect (
-    mapStateToProps, 
-    { getRecipes, deleteRecipe, getRecipeById}
-    )
-    (RecipesList);
+export default connect (mapStateToProps,{ getRecipes, deleteRecipe, getRecipeById}) (RecipesList);
