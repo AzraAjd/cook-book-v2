@@ -30,7 +30,6 @@ module.exports.recipesSearch = function (req, res) {
     @access Public
 */
 module.exports.recipesGetAll = function (req, res) {
-    console.log("GET all recipes")
 
     Recipe.find({}, function (err, recipe) {
         if (err)

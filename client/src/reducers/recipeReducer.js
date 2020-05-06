@@ -6,6 +6,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
+    console.log('he;ll')
     switch(action.type) {
         case GET_RECIPES:
             return {
