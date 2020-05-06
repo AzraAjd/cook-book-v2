@@ -6,7 +6,7 @@ to install the project requirements defined in `package.json` file, execute:
 npm install
 ```
 
-After the requirements are installed, ro run both frontend and backend at the same time, execute:
+After the requirements are installed, to run both frontend and backend at the same time, execute:
 ```
 npm run dev
 ```
