@@ -1,54 +1,41 @@
 'use strict';
-
-var mongoose = require ('mongoose');
-var User = require('../models/userModel');
-var db = mongoose.connection;
-var config = require('config');
-var mongoDB = config.get('mongoURI');
-const { check, validationResult } = require('express-validator');
+require('dotenv').config({path:__dirname+'/./../../.env'})
+let db = require('../db/config/db');
+let userQueries = require('../db/queries/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const auth = require('../../middleware/auth')
+const auth = require('../../middleware/auth');
 
-mongoose.connect(mongoDB, {useNewUrlParser: true});
-db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
 /*  @route POST /register
     @desc Register user
     @access Public
 */
-module.exports.register = function(req, res) {
-    const { name, email, password, isAdmin, about, userPhoto } = req.body;
+module.exports.register = async function(req, res) {
+    const userData = req.body;
 
   // Simple validation
-  if(!name || !email || !password) {
+  if(!userData.name || !userData.email || !userData.password) {
     return res.status(400).json({ msg: 'Please enter all fields' });
   }
 
   // Check for existing user
-  User.findOne({ email })
+  let email = userData.email;
+  console.log(req.body.email);
+  userQueries.findEmail( db, email )
     .then(user => {
       if(user) return res.status(400).json({ msg: 'User already exists' });
 
-      const newUser = new User({
-        name,
-        email,
-        password,
-        isAdmin,
-        about,
-        userPhoto
-      });
-
       // Create salt & hash
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
+        bcrypt.hash(userData.password, salt, (err, hash) => {
           if(err) throw err;
-          newUser.password = hash;
-          newUser.save()
+          userData.password = hash;
+          db.User.create(userData)
             .then(user => {
               jwt.sign(
                 { id: user.id },
-                config.get('jwtSecret'),
+                process.env.JWT_SECRET,
                 { expiresIn: 3600 },
                 (err, token) => {
                   if(err) throw err;
@@ -58,9 +45,9 @@ module.exports.register = function(req, res) {
                       id: user.id,
                       name: user.name,
                       email: user.email,
-                      isAdmin: user.isAdmin,
-                      about: user.about,
-                      userPhoto: user.userPhoto
+                      password: user.password,
+                      image: user.image,
+                      isAdmin: user.isAdmin
                     }
                   });
                 }
@@ -77,24 +64,26 @@ module.exports.register = function(req, res) {
     @access Public
 */
 module.exports.login = function(req, res) {
-    const { email, password} = req.body;
-    if (!email || !password) {
+  const userData = req.body;
+
+    if (!userData.email || !userData.password) {
         return res.status(400).json({ msg: 'Please enter all the fields' });
     }
 
     //check if the email exists
-    User.findOne({ email })
-        .then(user => {
-            if (!user) return res.status(400).json({ msg: 'User does not exist'});
+    let email = userData.email;
+    userQueries.findEmail( db, email )
+    .then(user => {
+      if(!user) return res.status(400).json({ msg: 'User does not exist' });
 
             //validate password
-            bcrypt.compare(password, user.password)
+            bcrypt.compare(userData.password, user.password)
                 .then(isMatch => {
                     if (!isMatch) return res.status(400).json({ msg: 'Invalid credidentials' });
 
                     jwt.sign(
-                        { id: User._id },
-                        config.get('jwtSecret'),
+                        { id: user.id },
+                        process.env.JWT_SECRET,
                         { expiresIn : 3600},
                         (err, token) => {
                             if (err) throw err;
@@ -106,6 +95,8 @@ module.exports.login = function(req, res) {
                     )
                 })
     });
+
+
 }
 
 /*  @route GET /user

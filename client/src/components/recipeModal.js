@@ -6,7 +6,8 @@ import {
     ModalBody,
     Form,
     FormGroup,
-    Input
+    Input,
+    Toast
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addRecipe } from '../actions/recipeActions';
@@ -19,8 +20,8 @@ class RecipeModal extends Component {
         description: '',
         img_url: '',
         directions: '',
-        prepTime: '',
-        category:''
+        prep_time: '',
+        authorId: null,
     }
 
     static propTypes = {
@@ -48,15 +49,19 @@ class RecipeModal extends Component {
             description: this.state.description,
             img_url: this.state.img_url,
             directions: this.state.directions,
-            prepTime: this.state.prepTime,
-            category: this.state.category
+            prep_time: this.state.prep_time,
+            authorId: 1, //TO CHANGE LATER
         }
 
+        console.log(newRecipe)
+
         // Add recipe via AddRecipe action 
+        if (newRecipe);
         this.props.addRecipe(newRecipe);
 
         // Close modal
         this.toggle();
+        alert("Recipe Added");
     }
 
     render() {
@@ -118,19 +123,11 @@ class RecipeModal extends Component {
                                 Time required to prepare the dish (in minutes)
                                 <Input
                                     type="number"
-                                    name="prepTime"
+                                    name="prep_time"
                                     id="prepTime"
                                     placeholder=""
                                     onChange={this.onChange}
                                 />
-                                <br/>
-                                Categories
-                                <select>
-                                    <option name="breakfast">Breakfast</option>
-                                    <option name="lunch">Lunch</option>
-                                    <option name="dinner">Dinner</option>
-                                    <option name="dessert">Dessert</option>
-                                </select>
                                 <br/>
                                 <Button
                                     color="success"

@@ -24,8 +24,7 @@ class RegisterModal extends Component {
     email: '',
     password: '',
     isAdmin: false,
-    about: '',
-    userPhoto: '',
+    image: '',
     msg: null
   };
 
@@ -71,7 +70,7 @@ class RegisterModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, isAdmin, about, userPhoto} = this.state;
+    const { name, email, password, isAdmin, image} = this.state;
 
     // Create user object
     const newUser = {
@@ -79,8 +78,7 @@ class RegisterModal extends Component {
         email,
         password,
         isAdmin,
-        about,
-        userPhoto
+        image
     };
 
     //Attempt to register
@@ -130,19 +128,11 @@ class RegisterModal extends Component {
                   className='mb-3'
                   onChange={this.onChange}
                 />
-                <Label for='about'>About you (optional)</Label>
+                <Label for='image'>Add a profile picture (optional)</Label>
                   <Input 
                   type="text" 
-                  name="about" 
-                  id="about"
-                  className='mb-3'
-                  onChange={this.onChange} 
-                />
-                <Label for='userPhoto'>Add a profile picture (optional)</Label>
-                  <Input 
-                  type="text" 
-                  name="userPhoto" 
-                  id="userPhoto"
+                  name="image" 
+                  id="image"
                   className='mb-3'
                   onChange={this.onChange} 
                 />

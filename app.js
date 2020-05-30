@@ -1,10 +1,13 @@
 var express = require('express');
+var cors = require('cors');
 var app = express();
 var path = require('path');
 var routes = require('./api/routes');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var db = mongoose.connection;
+//var mongoose = require('mongoose');
+//var db = mongoose.connection;
+
+app.use(cors());
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -26,8 +29,8 @@ const oauth2Client = new google.auth.Oauth2(
 );*/
 
 
-mongoose.connect("localhost:27017/CookBook", {useNewUrlParser: true});
-db.on('error', console.error.bind(console, 'MongoDB connection error'));
+/*mongoose.connect("localhost:27017/CookBook", {useNewUrlParser: true});
+db.on('error', console.error.bind(console, 'MongoDB connection error'));*/
 
 app.use(express.static(path.join(__dirname, 'public')));
 

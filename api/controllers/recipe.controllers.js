@@ -1,93 +1,100 @@
 'use strict';
 
-var mongoose = require ('mongoose');
-var Recipe = require('../models/recipeModel');
-var config = require('config');
-var mongoDB = config.get('mongoURI');
-const auth = require('../../middleware/auth');
+let db = require('../db/config/db');
+let recipeQueries = require('../db/queries/recipes');
 
-var db = mongoose.connection;
 
-mongoose.connect(mongoDB, {useNewUrlParser: true});
-db.on('error', console.error.bind(console, 'MongoDB connection error'));
+//GET all recipes
+module.exports.recipesGetAll = async function (req, res) {
+    try{
+        const response = await recipeQueries.find(db)
+        res.json(response);
+    } catch (err) {
+        console.log(err)
+      }
+     
+ };
 
-/*  @route GET /recipes/:name
-    @desc list all recipes
-    @access Public
-*/
-module.exports.recipesSearch = function (req, res) {
-    console.log("GET recipes searched by name")
 
-    Recipe.find({ name: req.params.name }, function (err, recipe) {
-        if (err)
-            res.send(err);
-        res.json(recipe);
-    });
-};
-
-/*  @route GET /recipes
-    @desc list all recipes
-    @access Public
-*/
-module.exports.recipesGetAll = function (req, res) {
-
-    Recipe.find({}, function (err, recipe) {
-        if (err)
-            res.send(err);
-        res.json(recipe);
-    });
-};
-
-/*  @route GET /recipe/:recipeId
-    @desc get one recipe
-    @access Public
-*/
+// GET recipe by ID
 module.exports.recipesGetOne = function (req, res) {
-    console.log("GET one recipe")
-    Recipe.findById(req.params.recipeId, function (err, recipe) {
-        if (err)
-            res.send(err);
-        console.log(recipe)
-        res.json(recipe);
-    });
+    const recipeId = req.params.recipeId;
+    recipeQueries.find(db, recipeId).then(
+        recipe => {
+            res.json({ recipe })
+        })
+        .catch(err => {
+            console.log(err);
+        })
 };
 
-/*  @route POST /recipes
-    @desc create a new recipe
-    @access Private
-*/
-module.exports.recipesCreate = function (req, res) {
-    console.log("CREATE a new recipe")
+//SEARCH recipe
+module.exports.recipesSearch = async function (req, res) {
+    try{
+        const name = req.params.name;
+        const response = await recipeQueries.search(db, name);
+        res.json(response);
+    } catch (err) {
+        console.log(err)
+      }
 
-    var new_recipe = new Recipe(req.body);
-    console.log(req.body);
-    new_recipe.save(function (err, recipe) {
-        if (err)
-            res.send(err);
-        res.json(recipe);
-    });
 };
 
-/*  @route PUT /recipes/:recipeId
-    @desc update an existing recipe
-*/
-module.exports.recipesUpdateOne = function (req, res) {
-    Recipe.findOneAndUpdate({_id: req.params.recipeId}, req.body, {new: true}, function (err, recipe) {
-        if (err)
-            res.send(err);
-            res.json(recipe);
-    });
+//POST recipe
+module.exports.recipesCreate = async function (req, res) {
+    const recipeData = req.body;
+    recipeData.isActive = true;
+    console.log(recipeData);
+
+
+    try {
+        const recipe = await db.Recipe.create(recipeData);
+        res.status(201)
+            .json({ recipe });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+//DELETE recipe
+module.exports.recipesDeleteOne = function (req, res) {
+    const { id } = req.params;
+    console.log("delete controller " + id)
+    try {
+        recipeQueries.softDelete(db, id)
+            .then(() => {
+                res.status(202)
+                    .end();
+            });
+    } catch (err) {
+        res.status(500)
+            .send(`The following error was thrown while trying to soft delte the recipe with id: ${id} from the db: ${err.message}`)
+            .end();
+    }
 };
 
-/*  @route DELETE /recipes/:recipeId
-    @desc delete a recipe
-    @access Private
-*/
-module.exports.recipesDeleteOne = ( function (req, res) {
-    Recipe.remove ({_id: req.params.recipeId}, function (err, recipe) {
-        if (err)
-            res.send(err);
-        res.json({message: 'Recipe deleted'});
-    });
-});
 
+//PATCH recipe
+module.exports.recipesPatchOne = async function (req, res) {
+    
+    const recipeData = req.body;
+    const id = req.params.recipeId;
+    try {
+        let recipe = await recipeQueries.find(db, id);
+        recipe.name = recipeData.name ? recipeData.name : recipe.name;
+        recipe.description = recipeData.description ? recipeData.description : recipe.description;
+        recipe.directions = recipeData.directions ? recipeData.directions : recipe.directions;
+        recipe.img_url = recipeData.img_url ? recipeData.img_url : recipe.img_url;
+        recipe.prep_time = recipeData.prep_time ? recipeData.prep_time : recipe.prep_time;
+        await recipe.save();
+        res.status(202)
+            .json({ recipe });
+    } catch (err) {
+        const errCode = errHandling(err);
+        res.status(errCode)
+            .send(`The following error was thrown while trying to update the recipe which has id: ${id}: ${err.message}`)
+            .end();
+    }
+
+
+};

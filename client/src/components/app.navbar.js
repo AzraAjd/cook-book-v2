@@ -42,7 +42,7 @@ class AppNavbar extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        
+        console.log(this.state.name);
         this.props.searchRecipes(this.state.name);
     }
 

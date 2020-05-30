@@ -5,12 +5,12 @@ import { returnErrors } from './errActions'
 
 export const searchRecipes = name => dispatch => {
     axios
-        .get(`http://localhost:8080/recipes/${name}`)
+        .get(`http://localhost:8080/recipes/search/${name}`)
         .then(res => {
             console.log(res);
             dispatch({
-                type: SEARCH_RECIPES,
-                payload: name
+                type: GET_RECIPES,
+                payload: res.data
             })
         })
 }
@@ -20,7 +20,7 @@ export const getRecipes = () => dispatch => {
     axios
         .get('http://localhost:8080/recipes')
         .then(res => {
-            console.log(res); 
+            //console.log(res); 
             dispatch({
                 type: GET_RECIPES,
                 payload: res.data
@@ -33,17 +33,19 @@ export const addRecipe = recipe => (dispatch, getState) => {
     axios
         .post('http://localhost:8080/recipes', recipe, tokenConfig(getState))
         .then(res => {
+            console.log(recipe);
             dispatch({
                 type: ADD_RECIPE,
                 payload: res.data
             })
-        }).catch(err => 
-            dispatch(returnErrors(err.response.data, err.response.status))
-        );
+        },
+        err => console.log(err))
         
 };
 
 export const deleteRecipe = id => (dispatch, getState) => {
+    console.log("tu sam");
+    console.log(id);
     axios
         .delete(`http://localhost:8080/recipes/${id}`,tokenConfig(getState))
         .then( res => 

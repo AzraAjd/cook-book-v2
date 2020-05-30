@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-require('../models/recipeModel');
 var ctrlRecipes = require('../controllers/recipe.controllers');
 var ctrlUsers = require('../controllers/user.controllers');
 var ctrlAuthentication = require('../controllers/authentication.controllers');
@@ -13,13 +12,17 @@ router
 
 router
   .route('/recipes/search/:name')
-  .get(ctrlRecipes.recipesSearch)
+  .get(ctrlRecipes.recipesSearch);
 
 router
   .route('/recipes/:recipeId')
   .get(ctrlRecipes.recipesGetOne);
 
-  //add 
+router
+  .route('recipes/:recipeId')
+  .delete(ctrlRecipes.recipesDeleteOne);
+
+//create new recipe
 router 
   .route('/recipes')
   .post(auth, ctrlRecipes.recipesCreate);
@@ -27,7 +30,12 @@ router
 //delete
 router
   .route('/recipes/:recipeId')
-  .delete(auth, ctrlRecipes.recipesDeleteOne)
+  .delete(auth, ctrlRecipes.recipesDeleteOne);
+
+//patch
+router
+.route('/recipes/:recipeId')
+.patch(auth, ctrlRecipes.recipesPatchOne);
 
 //authentication
 router
@@ -38,9 +46,9 @@ router
   .route('/login')
   .post(ctrlAuthentication.login);
 
-router
+/*router
   .route('/user')
-  .get(auth, ctrlAuthentication.userAuth)
+  .get(auth, ctrlAuthentication.userAuth)*/
 
 router
   .route('/users')
@@ -53,5 +61,9 @@ router
 router
   .route('/users/:userId')
   .delete(ctrlUsers.usersDeleteOne)
+
+router
+  .route('/users/:userId')
+  .patch(ctrlUsers.usersPatchOne)
 
 module.exports = router;

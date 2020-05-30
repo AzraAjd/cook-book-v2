@@ -15,13 +15,13 @@ export default function(state = initialState, action) {
             case GET_ONE_USER:
             return {
                 ...state,
-                users: state.users.filter(user => user._id === action.payload)
+                users: state.users.filter(user => user.id === action.payload)
             }
 
             case DELETE_USER:
             return {
                 ...state,
-                users: state.users.filter(user => user._id !== action.payload)
+                users: state.users.filter(user => user.id !== action.payload)
             }
             
             default:
