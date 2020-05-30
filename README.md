@@ -1,5 +1,5 @@
 # cook-book-v2
-Recipe book web app using MongoDB, Express, React and Node.js
+Recipe book web app using MySql, Express, React and Node.js
 
 to install the project requirements defined in `package.json` file, execute:
 ```
